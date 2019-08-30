@@ -1,0 +1,18 @@
+---
+steps:
+- name: 'hashicorp/terraform'
+  args: 
+  - init
+
+- name: 'hashicorp/terraform'
+  args: 
+  - apply
+  - -auto-approve
+
+- name: 'gcr.io/cloud-builders/gke-deploy:stable'
+  id: 'Deploy HelloWorld App'
+  args:
+    - run
+    - --filename=gke-deploy.yaml
+    - --location=southamerica-east1
+    - --cluster=gke-service-project

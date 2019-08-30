@@ -1,3 +1,16 @@
 steps:
 - name: 'hashicorp/packer'
   args: ['build', 'packer.json']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['config', '--global', 'user.name', '"Cloud Build"']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['config', '--global', 'user.email', '"$PROJECT_ID@cloudbuild.gserviceaccount.com"']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['tag', '-a', '0.0.1', '-m', '"Version created by Cloud Build"']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['push', 'origin', '0.0.1']
+
