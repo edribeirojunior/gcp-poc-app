@@ -1,0 +1,37 @@
+{
+    "variables": {
+      "MONGODB_INSTANCE": "4.2"
+    },
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo yum update -y",
+                "sudo yum install epel-release -y",
+                "sudo yum install ansible -y"
+            ]
+        },
+        {
+            "type": "ansible-local",
+            "playbook_files": ["ansible/local.yaml"],
+            "playbook_dir": "ansible/"
+        }
+    ],
+    "builders": [
+        {
+          "type": "googlecompute",
+          "instance_name": "packer-{{ uuid }}",
+          "project_id": "gcp-foundation-build-projects",
+          "source_image": "centos-7-v20190729",
+          "source_image_family": "centos-7",
+          "ssh_username": "packer",
+          "zone": "southamerica-east1-a",
+          "machine_type": "g1-small",
+          "network_project_id": "host-vpc-base-untrust",
+          "network": "vpc-base-untrust",
+          "region": "southamerica-east1",
+          "subnetwork": "staging",
+          "image_description": "Used for a POC Application"
+        }
+    ]
+  }

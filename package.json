@@ -1,0 +1,14 @@
+{
+  "name": "gcp-poc-app",
+  "version": "1.0.0",
+  "description": "POC App",
+  "main": "src/app.js",
+  "scripts": {
+    "production": "node src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,31 @@
+---
+- name: 'Install nginx if not installed'	
+  yum:	  
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: 'Install curl'
+  yum:
+    name: curl
+    state: present
+    update_cache: yes
+  ignore_errors: yes
+
+- name: 'Install npm Repository'
+  shell: 'curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -'
+  register: npm_check
+
+- name: 'Install npm'
+  yum:
+    name: nodejs
+    state: present
+    update_cache: yes
+  when: npm_check != '/usr/bin/npm'
+
+- name: 'Download backend'
+  shell: 'gsutil cp -r gs://gcp-foundation-build-projects/helloworld /usr/share/nginx/html/'
+
+- name: 'Npm install backend'
+  npm:
+    path: /usr/share/nginx/html/helloworld

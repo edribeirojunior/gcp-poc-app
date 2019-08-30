@@ -1,0 +1,46 @@
+---
+- name: 'Adding Mongodb Repo'
+  yum_repository:
+    name: "mongodb-org-4.2"
+    description: "MongoDB Repository"
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+    gpgcheck: yes
+    enabled: yes
+    gpgkey: https://www.mongodb.org/static/pgp/server-4.2.asc
+    file: mongodb-org-4.2
+    
+- name: 'Check if Mongodb is installed'
+  command: which mongod
+  register: mongod_check
+  ignore_errors: yes
+
+- name: 'Set MONGO'
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^MONGO'
+    line: 'MONGO=localhost'
+
+- name: 'install mongodb if not installed'
+  yum:
+    name: mongodb-org
+    state: present
+    update_cache: yes
+  when: mongod_check != '/usr/bin/mongod'
+
+- name: 'Start Mongod'
+  service: 
+    name: mongod
+    state: started
+
+- name: 'Check if pip is installed'
+  command: which pip
+  register: pip_check
+  ignore_errors: yes
+
+- name: 'Install pip if not installed'
+  command: easy_install pip
+  when: pip_check != '/usr/bin/pip'
+
+- name: 'Install pymongo'
+  command: pip install pymongo 
