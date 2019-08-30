@@ -1,0 +1,13 @@
+[Unit]
+Description=HelloWorld
+Documentation=https://example.com
+After=network.target
+
+[Service]
+Type=simple
+User=packer
+ExecStart=/usr/bin/node /usr/share/nginx/html/helloworld/src/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

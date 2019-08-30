@@ -23,9 +23,29 @@
     update_cache: yes
   when: npm_check != '/usr/bin/npm'
 
+- name: 'Install service-systemd'
+  npm:
+    name: service-systemd
+    global: yes
+    version: 3.5.1
+
 - name: 'Download backend'
   shell: 'gsutil cp -r gs://gcp-foundation-build-projects/helloworld /usr/share/nginx/html/'
 
 - name: 'Npm install backend'
   npm:
     path: /usr/share/nginx/html/helloworld
+
+- name: 'Install Systemd Service'
+  template:
+    src: nodejs.service.j2
+    dest: /etc/systemd/system/helloworld.service
+    mode: 644
+  notify:
+    - reload systemctl
+
+- name: 'Start systemctl'
+  service:
+    name: helloworld.service
+    state: started
+    enabled: yes
