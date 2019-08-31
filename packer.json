@@ -21,6 +21,7 @@
         {
           "type": "googlecompute",
           "instance_name": "myhelloworldapp",
+          "image_name": "myhelloworldapp",
           "project_id": "gcp-foundation-build-projects",
           "source_image": "centos-7-v20190729",
           "source_image_family": "centos-7",
